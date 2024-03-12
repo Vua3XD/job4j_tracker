@@ -11,15 +11,39 @@ public class Tracker {
         return item;
     }
 
+    public Item[] findAll() {
+        Item[] result = new Item[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = items[i];
+        }
+        return result;
+    }
+
+    public Item[] findByName(String key) {
+        int count = 0;
+        for (int i = 0; i < size; i++) {
+            if (items[i].getName().equals(key)) {
+                count++;
+            }
+        }
+        Item[] result = new Item[count];
+        int index = 0;
+        for (int i = 0; i < size; i++) {
+            if (items[i].getName().equals(key)) {
+                result[index++] = items[i];
+            }
+        }
+        return result;
+    }
+
     public Item findById(int id) {
-        Item rsl = null;
-        for (int index = 0; index < size; index++) {
-            Item item = items[index];
-            if (item.getId() == id) {
-                rsl = item;
+        Item result = null;
+        for (int i = 0; i < size; i++) {
+            if (items[i].getId() == id) {
+                result = items[i];
                 break;
             }
         }
-        return rsl;
+        return result;
     }
 }
