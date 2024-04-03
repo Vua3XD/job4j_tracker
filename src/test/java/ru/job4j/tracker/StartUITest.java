@@ -23,6 +23,7 @@ class StartUITest {
         String[] input = {"1", "test name"};
         MockInput mockInput = new MockInput(input);
         Tracker testTracker = new Tracker();
+        testTracker.add(new Item("Initial Name"));
 
         StartUI.replaceItem(mockInput, testTracker);
 
