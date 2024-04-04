@@ -1,22 +1,28 @@
-package ru.job4j.tracker;
+package ru.job4j.tracker.action;
 
-public class ReplaceAction implements UserAction {
+import ru.job4j.tracker.Input;
+import ru.job4j.tracker.Item;
+import ru.job4j.tracker.Output;
+import ru.job4j.tracker.Tracker;
+
+public class Replace implements UserAction {
 
     private final Output output;
 
-    public ReplaceAction(Output output) {
+    public Replace(Output output) {
         this.output = output;
     }
 
     @Override
     public String name() {
-        return "=== Редактирование заявки ===";
+        return "Изменить заявку";
     }
 
     @Override
     public boolean execute(Input input, Tracker tracker) {
         int id = input.askInt("Введите id: ");
         String name = input.askStr("Введите имя: ");
+        output.println("=== Редактирование заявки ===");
         Item item = new Item(name);
         if (tracker.replace(id, item)) {
             output.println("Заявка изменена успешно.");
