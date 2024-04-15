@@ -1,12 +1,12 @@
 package ru.job4j.tracker;
 
-import ru.job4j.tracker.action.Create;
-import ru.job4j.tracker.action.Delete;
-import ru.job4j.tracker.action.Exit;
-import ru.job4j.tracker.action.FindAll;
-import ru.job4j.tracker.action.FindById;
-import ru.job4j.tracker.action.FindByName;
-import ru.job4j.tracker.action.Replace;
+import ru.job4j.tracker.action.CreateAction;
+import ru.job4j.tracker.action.DeleteAction;
+import ru.job4j.tracker.action.ExitAction;
+import ru.job4j.tracker.action.FindAllAction;
+import ru.job4j.tracker.action.FindByIdAction;
+import ru.job4j.tracker.action.FindByNameAction;
+import ru.job4j.tracker.action.ReplaceAction;
 import ru.job4j.tracker.action.UserAction;
 
 public class StartUI {
@@ -38,13 +38,13 @@ public class StartUI {
         Input input = new ConsoleInput();
         Tracker tracker = new Tracker();
         UserAction[] actions = {
-                new Create(output),
-                new FindAll(output),
-                new Replace(output),
-                new Delete(output),
-                new FindById(output),
-                new FindByName(output),
-                new Exit(output)
+                new CreateAction(output),
+                new FindAllAction(output),
+                new ReplaceAction(output),
+                new DeleteAction(output),
+                new FindByIdAction(output),
+                new FindByNameAction(output),
+                new ExitAction(output)
         };
         new StartUI(output).init(input, tracker, actions);
     }

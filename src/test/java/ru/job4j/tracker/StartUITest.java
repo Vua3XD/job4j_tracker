@@ -1,13 +1,13 @@
 package ru.job4j.tracker;
 
 import org.junit.jupiter.api.Test;
-import ru.job4j.tracker.action.Create;
-import ru.job4j.tracker.action.Delete;
-import ru.job4j.tracker.action.Exit;
-import ru.job4j.tracker.action.FindAll;
-import ru.job4j.tracker.action.FindById;
-import ru.job4j.tracker.action.FindByName;
-import ru.job4j.tracker.action.Replace;
+import ru.job4j.tracker.action.CreateAction;
+import ru.job4j.tracker.action.DeleteAction;
+import ru.job4j.tracker.action.ExitAction;
+import ru.job4j.tracker.action.FindAllAction;
+import ru.job4j.tracker.action.FindByIdAction;
+import ru.job4j.tracker.action.FindByNameAction;
+import ru.job4j.tracker.action.ReplaceAction;
 import ru.job4j.tracker.action.UserAction;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,8 +20,8 @@ class StartUITest {
         );
         Tracker tracker = new Tracker();
         UserAction[] actions = {
-                new Create(new ConsoleOutput()),
-                new Exit(new ConsoleOutput())
+                new CreateAction(new ConsoleOutput()),
+                new ExitAction(new ConsoleOutput())
         };
         new StartUI(new ConsoleOutput()).init(input, tracker, actions);
         assertThat(tracker.findAll()[0].getName()).isEqualTo("Item name");
@@ -36,8 +36,8 @@ class StartUITest {
                 new String[] {"0", String.valueOf(item.getId()), "New item name", "1"}
         );
         UserAction[] actions = {
-                new Replace(new ConsoleOutput()),
-                new Exit(new ConsoleOutput())
+                new ReplaceAction(new ConsoleOutput()),
+                new ExitAction(new ConsoleOutput())
         };
         new StartUI(new ConsoleOutput()).init(input, tracker, actions);
         assertThat(tracker.findById(item.getId()).getName()).isEqualTo(replacedName);
@@ -51,8 +51,8 @@ class StartUITest {
                 new String[] {"0", String.valueOf(item.getId()), "1"}
         );
         UserAction[] actions = {
-                new Delete(new ConsoleOutput()),
-                new Exit(new ConsoleOutput())
+                new DeleteAction(new ConsoleOutput()),
+                new ExitAction(new ConsoleOutput())
         };
         new StartUI(new ConsoleOutput()).init(input, tracker, actions);
         assertThat(tracker.findById(item.getId())).isNull();
@@ -65,8 +65,8 @@ class StartUITest {
         Item item2 = tracker.add(new Item("Item_2"));
         Input input = new MockInput(new String[] {"0", "1"});
         UserAction[] actions = {
-                new FindAll(new ConsoleOutput()),
-                new Exit(new ConsoleOutput())
+                new FindAllAction(new ConsoleOutput()),
+                new ExitAction(new ConsoleOutput())
         };
         new StartUI(new ConsoleOutput()).init(input, tracker, actions);
         assertThat(tracker.findAll()).containsExactly(item1, item2);
@@ -79,8 +79,8 @@ class StartUITest {
         Item item2 = tracker.add(new Item("Item_2"));
         Input input = new MockInput(new String[] {"0", "Item_1", "1"});
         UserAction[] actions = {
-                new FindByName(new ConsoleOutput()),
-                new Exit(new ConsoleOutput())
+                new FindByNameAction(new ConsoleOutput()),
+                new ExitAction(new ConsoleOutput())
         };
         new StartUI(new ConsoleOutput()).init(input, tracker, actions);
         assertThat(tracker.findByName("Item_1")).containsExactly(item1);
@@ -92,8 +92,8 @@ class StartUITest {
         Item item = tracker.add(new Item("Item"));
         Input input = new MockInput(new String[] {"0", String.valueOf(item.getId()), "1"});
         UserAction[] actions = {
-                new FindById(new ConsoleOutput()),
-                new Exit(new ConsoleOutput())
+                new FindByIdAction(new ConsoleOutput()),
+                new ExitAction(new ConsoleOutput())
         };
         new StartUI(new ConsoleOutput()).init(input, tracker, actions);
         assertThat(tracker.findById(item.getId())).isEqualTo(item);
@@ -109,8 +109,8 @@ class StartUITest {
                 new String[] {"0", String.valueOf(one.getId()), replaceName, "1"}
         );
         UserAction[] actions = new UserAction[]{
-                new Replace(output),
-                new Exit(output)
+                new ReplaceAction(output),
+                new ExitAction(output)
         };
         new StartUI(output).init(input, tracker, actions);
         String ln = System.lineSeparator();
