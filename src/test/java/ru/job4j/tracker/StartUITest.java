@@ -10,7 +10,12 @@ import ru.job4j.tracker.action.FindByNameAction;
 import ru.job4j.tracker.action.ReplaceAction;
 import ru.job4j.tracker.action.UserAction;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 class StartUITest {
     @Test
@@ -125,5 +130,102 @@ class StartUITest {
                         + "1. Завершить программу" + ln
                         + "=== Завершение программы ===" + ln
         );
+    }
+
+    @Test
+    void whenFindAllActionExecuted() {
+        Tracker tracker = new Tracker();
+        Item item1 = tracker.add(new Item("Item_1"));
+        Item item2 = tracker.add(new Item("Item_2"));
+        Output output = new StubOutput();
+        FindAllAction findAllAction = new FindAllAction(output);
+
+        String[] input = {"0"};
+        MockInput mockInput = new MockInput(input);
+
+        findAllAction.execute(mockInput, tracker);
+
+        String expectedOutput = item1 + System.lineSeparator();
+        expectedOutput += item2 + System.lineSeparator();
+
+        assertThat(output.toString()).isEqualTo(expectedOutput);
+    }
+
+    @Test
+    public void whenExecuteActionThenFindByName() {
+        Tracker tracker = new Tracker();
+        Item item1 = new Item("Item_1");
+        Item item2 = new Item("Item_2");
+        tracker.add(item1);
+        tracker.add(item2);
+
+        StringBuilder outputBuilder = new StringBuilder();
+        Output output = new Output() {
+            @Override
+            public void println(Object object) {
+                outputBuilder.append(object).append(System.lineSeparator());
+            }
+        };
+
+        FindByNameAction findByNameAction = new FindByNameAction(output);
+
+        findByNameAction.execute(new MockInput(new String[]{"Item_1"}), tracker);
+
+        assertEquals(item1 + System.lineSeparator(), outputBuilder.toString());
+    }
+
+    @Test
+    public void whenExecuteActionThenNotFound() {
+        Tracker tracker = new Tracker();
+
+        StringBuilder outputBuilder = new StringBuilder();
+        Output output = new Output() {
+            @Override
+            public void println(Object object) {
+                outputBuilder.append(object).append(System.lineSeparator());
+            }
+        };
+
+        FindByNameAction findByNameAction = new FindByNameAction(output);
+
+        findByNameAction.execute(new MockInput(new String[]{"Item_3"}), tracker);
+
+        assertEquals("Заявки с именем: Item_3 не найдены." + System.lineSeparator(), outputBuilder.toString());
+    }
+
+    @Test
+    public void whenExecuteActionThenFindById() {
+        Tracker tracker = new Tracker();
+        Item item = new Item("Item_1");
+        tracker.add(item);
+
+        Output output = new Output() {
+            @Override
+            public void println(Object object) {
+                System.out.println(object);
+            }
+        };
+
+        FindByIdAction findByIdAction = new FindByIdAction(output);
+
+        findByIdAction.execute(new MockInput(new String[]{"1"}), tracker);
+
+    }
+
+    @Test
+    public void whenExecuteActionThenIdNotFound() {
+        Tracker tracker = new Tracker();
+
+        Output output = new Output() {
+            @Override
+            public void println(Object object) {
+                System.out.println(object);
+            }
+        };
+
+        FindByIdAction findByIdAction = new FindByIdAction(output);
+
+        findByIdAction.execute(new MockInput(new String[]{"1"}), tracker);
+
     }
 }
