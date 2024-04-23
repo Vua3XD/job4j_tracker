@@ -3,7 +3,7 @@ package ru.job4j.ex;
 import org.junit.jupiter.api.Test;
 import ru.job4j.ex.Factorial;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FactorialTest {
