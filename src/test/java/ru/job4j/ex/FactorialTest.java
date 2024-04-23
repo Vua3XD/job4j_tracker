@@ -1,9 +1,8 @@
 package ru.job4j.ex;
 
 import org.junit.jupiter.api.Test;
-import ru.job4j.ex.Factorial;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FactorialTest {
@@ -22,7 +21,7 @@ public class FactorialTest {
         Factorial factorial = new Factorial();
         int result = factorial.calc(0);
 
-        assertEquals(1, result);
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -30,6 +29,6 @@ public class FactorialTest {
         Factorial factorial = new Factorial();
         int result = factorial.calc(5);
 
-        assertEquals(120, result);
+        assertThat(result).isEqualTo(120);
     }
 }
