@@ -21,7 +21,7 @@ class StartUITest {
     @Test
     void whenCreateItem() {
         Input input = new MockInput(
-                new String[] {"0", "Item name", "1"}
+                new String[] {"0", "Item name", "1", "Some other value"}
         );
         Tracker tracker = new Tracker();
         UserAction[] actions = {
