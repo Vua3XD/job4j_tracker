@@ -1,10 +1,12 @@
 package ru.job4j.collection;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Citizen {
     private String passport;
     private String username;
+    private Map<String, Citizen> citizens;
 
     public Citizen(String passport, String username) {
         this.passport = passport;
@@ -17,6 +19,10 @@ public class Citizen {
 
     public String getUsername() {
         return username;
+    }
+
+    public Citizen getCitizenByPassport(String passport) {
+        return citizens.get(passport);
     }
 
     @Override
