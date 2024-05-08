@@ -21,10 +21,6 @@ public class Citizen {
         return username;
     }
 
-    public Citizen getCitizenByPassport(String passport) {
-        return citizens.get(passport);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
