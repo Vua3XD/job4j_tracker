@@ -8,6 +8,10 @@ import java.util.Map;
 public class BankService {
     private final Map<User, List<Account>> users = new HashMap<>();
 
+    public List<Account> getAccounts(User user) {
+        return users.get(user);
+    }
+
     public void addUser(User user) {
         users.putIfAbsent(user, new ArrayList<>());
     }
@@ -20,7 +24,14 @@ public class BankService {
         User user = findByPassport(passport);
         if (user != null) {
             List<Account> accounts = users.get(user);
-            if (!accounts.contains(account)) {
+            boolean accountExists = false;
+            for (Account acc : accounts) {
+                if (acc.getRequisite().equals(account.getRequisite())) {
+                    accountExists = true;
+                    break;
+                }
+            }
+            if (!accountExists) {
                 accounts.add(account);
             }
         }
