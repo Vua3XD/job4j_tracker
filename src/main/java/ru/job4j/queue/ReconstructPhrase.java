@@ -16,8 +16,7 @@ public class ReconstructPhrase {
     private String getEvenElements() {
         StringBuilder result = new StringBuilder();
         int index = 0;
-        while (!evenElements.isEmpty()) {
-            char currentChar = evenElements.pollFirst();
+        for (char currentChar : evenElements) {
             if (index % 2 == 0) {
                 result.append(currentChar);
             }
