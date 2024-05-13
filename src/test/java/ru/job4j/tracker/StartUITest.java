@@ -13,6 +13,8 @@ import ru.job4j.tracker.action.UserAction;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -24,44 +26,41 @@ class StartUITest {
                 new String[] {"0", "Item name", "1", "Some other value"}
         );
         Tracker tracker = new Tracker();
-        UserAction[] actions = {
+        List<UserAction> actions = Arrays.asList(
                 new CreateAction(new ConsoleOutput()),
                 new ExitAction(new ConsoleOutput())
-        };
+        );
         StartUI startUI = new StartUI(new ConsoleOutput());
         startUI.init(input, tracker, actions);
-        actions[0].execute(input, tracker);
+        actions.get(0).execute(input, tracker);
         assertThat(tracker.findAll().get(0).getName()).isEqualTo("Item name");
     }
 
     @Test
     void whenReplaceItem() {
+        Output output = new StubOutput();
         Tracker tracker = new Tracker();
-        Item item = tracker.add(new Item("Replaced item"));
-        String replacedName = "New item name";
-        Input input = new MockInput(
-                new String[] {"0", String.valueOf(item.getId()), "New item name", "1"}
+        Item item = tracker.add(new Item("Item"));
+        Input input = new MockInput(new String[] {"0", String.valueOf(item.getId()), "New Item Name", "1"});
+        List<UserAction> actions = Arrays.asList(
+                new ReplaceAction(output),
+                new ExitAction(output)
         );
-        UserAction[] actions = {
-                new ReplaceAction(new ConsoleOutput()),
-                new ExitAction(new ConsoleOutput())
-        };
-        new StartUI(new ConsoleOutput()).init(input, tracker, actions);
-        assertThat(tracker.findById(item.getId()).getName()).isEqualTo(replacedName);
+        new StartUI(output).init(input, tracker, actions);
+        assertThat(tracker.findById(item.getId()).getName()).isEqualTo("New Item Name");
     }
 
     @Test
     void whenDeleteItem() {
+        Output output = new StubOutput();
         Tracker tracker = new Tracker();
-        Item item = tracker.add(new Item("Deleted item"));
-        Input input = new MockInput(
-                new String[] {"0", String.valueOf(item.getId()), "1"}
+        Item item = tracker.add(new Item("Item"));
+        Input input = new MockInput(new String[] {"0", String.valueOf(item.getId()), "1"});
+        List<UserAction> actions = Arrays.asList(
+                new DeleteAction(output),
+                new ExitAction(output)
         );
-        UserAction[] actions = {
-                new DeleteAction(new ConsoleOutput()),
-                new ExitAction(new ConsoleOutput())
-        };
-        new StartUI(new ConsoleOutput()).init(input, tracker, actions);
+        new StartUI(output).init(input, tracker, actions);
         assertThat(tracker.findById(item.getId())).isNull();
     }
 
@@ -71,10 +70,10 @@ class StartUITest {
         Item item1 = tracker.add(new Item("Item_1"));
         Item item2 = tracker.add(new Item("Item_2"));
         Input input = new MockInput(new String[] {"0", "1"});
-        UserAction[] actions = {
+        List<UserAction> actions = Arrays.asList(
                 new FindAllAction(new ConsoleOutput()),
                 new ExitAction(new ConsoleOutput())
-        };
+        );
         new StartUI(new ConsoleOutput()).init(input, tracker, actions);
         assertThat(tracker.findAll()).containsExactly(item1, item2);
     }
@@ -85,10 +84,10 @@ class StartUITest {
         Item item1 = tracker.add(new Item("Item_1"));
         Item item2 = tracker.add(new Item("Item_2"));
         Input input = new MockInput(new String[] {"0", "Item_1", "1"});
-        UserAction[] actions = {
+        List<UserAction> actions = Arrays.asList(
                 new FindByNameAction(new ConsoleOutput()),
                 new ExitAction(new ConsoleOutput())
-        };
+        );
         new StartUI(new ConsoleOutput()).init(input, tracker, actions);
         assertThat(tracker.findByName("Item_1")).containsExactly(item1);
     }
@@ -98,10 +97,10 @@ class StartUITest {
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("Item"));
         Input input = new MockInput(new String[] {"0", String.valueOf(item.getId()), "1"});
-        UserAction[] actions = {
+        List<UserAction> actions = Arrays.asList(
                 new FindByIdAction(new ConsoleOutput()),
                 new ExitAction(new ConsoleOutput())
-        };
+        );
         new StartUI(new ConsoleOutput()).init(input, tracker, actions);
         assertThat(tracker.findById(item.getId())).isEqualTo(item);
     }
@@ -115,10 +114,10 @@ class StartUITest {
         Input input = new MockInput(
                 new String[] {"0", String.valueOf(one.getId()), replaceName, "1"}
         );
-        UserAction[] actions = new UserAction[]{
+        List<UserAction> actions = Arrays.asList(
                 new ReplaceAction(output),
                 new ExitAction(output)
-        };
+        );
         new StartUI(output).init(input, tracker, actions);
         String ln = System.lineSeparator();
         assertThat(output.toString()).isEqualTo(
@@ -238,9 +237,9 @@ class StartUITest {
                 new String[] {"1", "0"}
         );
         Tracker tracker = new Tracker();
-        UserAction[] actions = new UserAction[]{
+        List<UserAction> actions = Arrays.asList(
                 new ExitAction(output)
-        };
+        );
         new StartUI(output).init(input, tracker, actions);
         String ln = System.lineSeparator();
         assertThat(output.toString()).isEqualTo(
